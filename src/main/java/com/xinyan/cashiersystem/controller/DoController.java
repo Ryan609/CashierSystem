@@ -1,6 +1,8 @@
 package com.xinyan.cashiersystem.controller;
 
+import com.xinyan.cashiersystem.model.PasswordValidator;
 import com.xinyan.cashiersystem.model.User;
+import com.xinyan.cashiersystem.model.UsernameValidator;
 import com.xinyan.cashiersystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,45 +18,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class DoController {
     private final UserService userService;
+    private final UsernameValidator usernameValidator;
+    private final PasswordValidator passwordValidator;
 
     @Autowired
-    public DoController(UserService userService) {
+    public DoController(UserService userService, UsernameValidator usernameValidator, PasswordValidator passwordValidator) {
         this.userService = userService;
+        this.usernameValidator = usernameValidator;
+        this.passwordValidator = passwordValidator;
     }
 
     @PostMapping("/register.do")
     public String register(String username, String password) {
         log.debug("用户注册: username = {}, password = {}", username, password);
 
-        // 进行参数的合法性校验
-        // 用户名的要求：不是 null && 不是 "" && 长度不能超过 50 && 不能重复
-        if (username == null) {
-            throw new ErrorRedirectException("username 是 null");
-        }
-
-        username = username.trim(); // 去掉两边的空格
-        if (username.isEmpty()) {
-            throw new ErrorRedirectException("username 是 \"\"");
-        }
-
-        if (username.length() > 50) {
-            throw new ErrorRedirectException("username 的长度超过 50");
-        }
-
-        // username 是一个合法的用户名
-
-        // 密码的要求：不是 null && 不是 ""
-        // TODO: 长度必须超过 8 个字符 && 必须有数字 + 字母
-        if (password == null) {
-            throw new ErrorRedirectException("password 是 null");
-        }
-
-        password = password.trim();
-        if (password.isEmpty()) {
-            throw new ErrorRedirectException("password 是 \"\"");
-        }
-
-        // password 是一个合法的密码
+        username = usernameValidator.validate(username);
+        password = passwordValidator.validate(password);
 
         // 完成注册的工作
         try {
