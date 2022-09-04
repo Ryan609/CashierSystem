@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinyan.cashiersystem.mapper.ProductMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
+        insert into products
+            (user_id, name, introduce, stock, unit, price, discount)
+        values
+            (#{userId}, #{name}, #{introduce}, #{stock}, #{unit}, #{price}, #{discount})
+    </insert>
+
+    <select id="selectAll" resultType="com.xinyan.cashiersystem.model.product.Product">
+        select product_id, user_id, name, introduce, stock, unit, price, discount
+        from products order by product_id desc
+    </select>
+
+</mapper>

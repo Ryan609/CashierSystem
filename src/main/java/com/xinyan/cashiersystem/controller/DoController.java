@@ -1,9 +1,12 @@
 package com.xinyan.cashiersystem.controller;
 
+import ch.qos.logback.core.joran.util.beans.BeanDescriptionFactory;
 import com.xinyan.cashiersystem.model.PasswordValidator;
 import com.xinyan.cashiersystem.model.User;
 import com.xinyan.cashiersystem.model.UsernameValidator;
+import com.xinyan.cashiersystem.model.product.Product;
 import com.xinyan.cashiersystem.model.product.ProductParam;
+import com.xinyan.cashiersystem.service.ProductService;
 import com.xinyan.cashiersystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +27,14 @@ public class DoController {
     private final UserService userService;
     private final UsernameValidator usernameValidator;
     private final PasswordValidator passwordValidator;
+    private final ProductService productService;
 
     @Autowired
-    public DoController(UserService userService, UsernameValidator usernameValidator, PasswordValidator passwordValidator) {
+    public DoController(UserService userService, UsernameValidator usernameValidator, PasswordValidator passwordValidator, ProductService productService) {
         this.userService = userService;
         this.usernameValidator = usernameValidator;
         this.passwordValidator = passwordValidator;
+        this.productService = productService;
     }
 
     @PostMapping("/register.do")
@@ -80,12 +85,23 @@ public class DoController {
     }
 
     @PostMapping("/product/create.do")
-    public String productCreate(ProductParam productParam) {
+    public String productCreate(ProductParam productParam, HttpServletRequest request) {
         String module = "用户登录";
         String redirectUrl = "/login.html";
         log.debug("{}: 请求参数 = {}", module, productParam);
 
+        User currentUser = null;
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            currentUser = (User) session.getAttribute("currentUser");
+        }
 
+        if (currentUser == null) {
+            // 说明用户未登录
+            log.debug("{}: 用户未登录，无权进行该操作", module);
+            return "redirect:/login.html";  // 重定向到登录页，让用户登录
+        }
+        Product product = productService.create(currentUser, productParam);
         return "redirect:/product/list.html";
     }
 
