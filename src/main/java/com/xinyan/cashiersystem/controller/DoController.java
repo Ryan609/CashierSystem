@@ -3,6 +3,7 @@ package com.xinyan.cashiersystem.controller;
 import com.xinyan.cashiersystem.model.PasswordValidator;
 import com.xinyan.cashiersystem.model.User;
 import com.xinyan.cashiersystem.model.UsernameValidator;
+import com.xinyan.cashiersystem.model.product.ProductParam;
 import com.xinyan.cashiersystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,4 +78,16 @@ public class DoController {
         log.debug("{}: 登录成功, user = {}", module, user);
         return "redirect:/";
     }
+
+    @PostMapping("/product/create.do")
+    public String productCreate(ProductParam productParam) {
+        String module = "用户登录";
+        String redirectUrl = "/login.html";
+        log.debug("{}: 请求参数 = {}", module, productParam);
+
+
+        return "redirect:/product/list.html";
+    }
+
+
 }
