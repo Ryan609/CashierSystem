@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface UserMapper {
     void insert(User user);
+
+    User selectByUserName(String username);
 }

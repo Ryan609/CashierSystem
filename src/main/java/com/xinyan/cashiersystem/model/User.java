@@ -19,6 +19,7 @@ public class User {
     public User() {}
 
     public User(String username, String password) {
+        log.debug("model.User(username = {}, password = {})", username, password);
         this.username = username;
         this.password = password;
     }

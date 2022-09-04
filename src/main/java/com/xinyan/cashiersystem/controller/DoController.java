@@ -10,6 +10,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * @author: xinyan
  * @data: 2022/09/01/22:03
@@ -29,21 +32,49 @@ public class DoController {
     }
 
     @PostMapping("/register.do")
-    public String register(String username, String password) {
-        log.debug("用户注册: username = {}, password = {}", username, password);
+    public String register(String username, String password, HttpServletRequest request) {
+        String module = "用户注册";
+        String redirectUrl = "/register.html";
+        log.debug("{}: username = {}, password = {}", module, username, password);
 
-        username = usernameValidator.validate(username);
-        password = passwordValidator.validate(password);
+        username = usernameValidator.validate(module, redirectUrl,username);
+        password = passwordValidator.validate(module,redirectUrl,password);
 
         // 完成注册的工作
         try {
             User user = userService.register(username, password);
 
+            // 直接完成登录, 把信息放到session中.
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("currentUser", user);
+
             // 最终注册成功之后，跳转到首页(/)
-            log.debug("用户注册: 注册成功, user = {}", user);
+            log.debug("{}: 注册成功, user = {}", module, user);
             return "redirect:/";
         } catch (DuplicateKeyException exc) {
-            throw new ErrorRedirectException("username 重复", exc);
+            throw new ErrorRedirectException("username 重复", module, redirectUrl, exc);
         }
+    }
+
+    @PostMapping("/login.do")
+    public String login(String username, String password, HttpServletRequest request) {
+        String module = "用户登录";
+        String redirectUrl = "/login.html";
+        log.debug("{}: username = {}, password = {}", module, username, password);
+
+        username = usernameValidator.validate(module, redirectUrl, username);
+        password = passwordValidator.validate(module, redirectUrl, password);
+
+        User user = userService.login(username, password);
+
+        if (user == null) {
+            throw new ErrorRedirectException("用户名或密码错误", module, redirectUrl);
+        }
+
+        HttpSession httpSession = request.getSession();
+        httpSession.setAttribute("currentUser", user);
+
+        log.debug("{}: 登录成功, user = {}", module, user);
+        return "redirect:/";
     }
 }

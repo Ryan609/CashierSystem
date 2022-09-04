@@ -9,7 +9,7 @@ spring:
 logging:
   level:
     root: warn
-    com.com.xinyan: debug
+    com.xinyan: debug
 mybatis:
   mapper-locations: classpath:/mapper/**Mapper.xml
   configuration:

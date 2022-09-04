@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CashControllerAdvice {
     @ExceptionHandler(ErrorRedirectException.class)
     public String logAndRedirect(ErrorRedirectException exc) {
-        // 暂时所有的错误都先重定向到注册页(/register.html)
-        log.debug("用户注册: {}，注册失败", exc.getError());
-        return "redirect:/register.html";
+        // 根据不同逻辑, 进行不同处理
+        log.debug("{}: {}", exc.getModule(), exc.getError());
+        return "redirect:" + exc.getRedirectUrl();
     }
 }
 

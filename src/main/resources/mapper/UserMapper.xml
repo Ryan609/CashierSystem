@@ -6,4 +6,8 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert into users (username, password) values (#{username}, #{password})
     </insert>
+
+    <select id="selectByUserName" resultType="com.xinyan.cashiersystem.model.User">
+        select user_id, username, password from users where username = #{username}
+    </select>
 </mapper>
