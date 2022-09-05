@@ -1,6 +1,6 @@
 package com.xinyan.cashiersystem.controller;
 
-import ch.qos.logback.core.joran.util.beans.BeanDescriptionFactory;
+
 import com.xinyan.cashiersystem.model.PasswordValidator;
 import com.xinyan.cashiersystem.model.User;
 import com.xinyan.cashiersystem.model.UsernameValidator;

@@ -25,4 +25,17 @@
                             discount = #{discount}
         where product_id = #{productId}
     </update>
+
+    <select id="selectProductListByProductIdSet" resultType="com.xinyan.cashiersystem.model.product.Product">
+        select product_id, user_id, name, introduce, stock, unit, price, discount
+        from products where product_id in (
+        <foreach collection="list" item="product_id" separator=", ">
+            #{product_id}
+        </foreach>
+        )
+    </select>
+
+    <update id="decrementStockByProductId">
+        update products set stock = stock - #{number} where product_id = #{productId}
+    </update>
 </mapper>
