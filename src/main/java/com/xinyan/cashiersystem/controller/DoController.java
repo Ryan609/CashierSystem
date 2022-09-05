@@ -105,5 +105,24 @@ public class DoController {
         return "redirect:/product/list.html";
     }
 
+    @PostMapping("/product/update.do")
+    public String productUpdate(ProductParam productParam, HttpServletRequest request) {
+        log.debug("商品更新: 请求参数 = {}", productParam);
 
+        User currentUser = null;
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            currentUser = (User) session.getAttribute("currentUser");
+        }
+        if (currentUser == null) {
+            // 说明用户未登录
+            log.debug("商品更新: 用户未登录，无权进行该操作");
+            return "redirect:/login.html";  // 重定向到登录页，让用户登录
+        }
+
+        Product product = productService.update(currentUser, productParam);
+
+        log.debug("商品更新: 成功，product = {}", product);
+        return "redirect:/product/list.html";
+    }
 }

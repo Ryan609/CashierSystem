@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 public class ProductParam {
+    private String productId;
     private String name;
     private String introduce;
     private String stock;

@@ -13,4 +13,6 @@ public interface ProductMapper {
     void insert(Product product);
 
     List<Product> selectAll();
+
+    void updateByProductId(Product product);
 }

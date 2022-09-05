@@ -15,4 +15,14 @@
         from products order by product_id desc
     </select>
 
+    <update id="updateByProductId">
+        update products set
+                            name = #{name},
+                            introduce = #{introduce},
+                            stock = #{stock},
+                            unit = #{unit},
+                            price = #{price},
+                            discount = #{discount}
+        where product_id = #{productId}
+    </update>
 </mapper>

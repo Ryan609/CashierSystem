@@ -35,4 +35,10 @@ public class ProductService {
     public List<Product> getList() {
         return productMapper.selectAll();
     }
+
+    public Product update(User user, ProductParam productParam) {
+        Product product  = new Product(user, productParam);
+        productMapper.updateByProductId(product);
+        return product;
+    }
 }

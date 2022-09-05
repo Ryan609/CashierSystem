@@ -27,6 +27,7 @@ public class Product {
     }
 
     public Product(User user, ProductParam param) {
+        this.productId = param.getProductId() != null ? Integer.parseInt(param.getProductId()) : null;
         log.debug("model.product.Product(user = {}, param = {})", user, param);
         this.userId = user.getUserId();
         this.name = param.getName();
