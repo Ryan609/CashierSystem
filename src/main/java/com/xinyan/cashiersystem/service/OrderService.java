@@ -5,6 +5,7 @@ import com.xinyan.cashiersystem.mapper.OrderMapper;
 import com.xinyan.cashiersystem.mapper.ProductMapper;
 import com.xinyan.cashiersystem.model.User;
 import com.xinyan.cashiersystem.model.order.Order;
+import com.xinyan.cashiersystem.model.order.OrderDetail;
 import com.xinyan.cashiersystem.model.order.OrderItem;
 import com.xinyan.cashiersystem.model.order.OrderStatus;
 import com.xinyan.cashiersystem.model.product.Product;
@@ -177,5 +178,13 @@ public class OrderService {
 
             productMapper.incrementStockByProductId(productId, number);
         }
+    }
+
+    public OrderDetail query(String uuid) {
+        OrderDetail order = orderMapper.selectByUUID(uuid);
+
+        order.setItemList(orderItemMapper.selectAllByOrderId(order.getOrderId()));
+
+        return order;
     }
 }

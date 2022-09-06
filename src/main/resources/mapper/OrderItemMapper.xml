@@ -34,6 +34,12 @@
         select product_id, product_number from order_items where order_id = #{orderId}
     </select>
 
+    <select id="selectAllByOrderId" resultType="com.xinyan.cashiersystem.model.order.OrderItemDetail">
+        select product_id, product_name, product_price, product_number, product_unit, product_discount
+        from order_items where order_id = #{orderId}
+        order by id
+    </select>
+
     <delete id="deleteByOrderId">
         delete from order_items where order_id = #{orderId}
     </delete>

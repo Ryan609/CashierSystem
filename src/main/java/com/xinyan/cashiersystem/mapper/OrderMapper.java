@@ -2,6 +2,7 @@ package com.xinyan.cashiersystem.mapper;
 
 
 import com.xinyan.cashiersystem.model.order.Order;
+import com.xinyan.cashiersystem.model.order.OrderDetail;
 import com.xinyan.cashiersystem.model.order.OrderStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ public interface OrderMapper {
             @Param("status")OrderStatus status);
 
     void deleteByOrderId(int orderId);
+
+    OrderDetail selectByUUID(String uuid);
 }

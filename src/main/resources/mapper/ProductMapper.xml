@@ -35,7 +35,7 @@
         )
     </select>
 
-    <update id="decrementStockByProductId">
+    <update id="decreaseStockByProductId">
         update products set stock = stock - #{number} where product_id = #{productId}
     </update>
 </mapper>
