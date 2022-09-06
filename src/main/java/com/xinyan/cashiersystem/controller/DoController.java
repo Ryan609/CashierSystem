@@ -201,4 +201,47 @@ public class DoController {
 
         return "order-detail";
     }
+
+    @GetMapping("/order/confirm/{orderId}")
+    public String orderConfirm(@PathVariable int orderId, HttpServletRequest request) {
+        log.debug("确认订单: orderId = {}", orderId);
+
+        User currentUser = null;
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            currentUser = (User) session.getAttribute("currentUser");
+        }
+        if (currentUser == null) {
+            // 说明用户未登录
+            log.debug("商品更新: 用户未登录，无权进行该操作");
+            return "redirect:/login.html";  // 重定向到登录页，让用户登录
+        }
+        log.debug("当前用户: user = {}", currentUser);
+
+        orderService.confirm(orderId);
+
+        return "redirect:/order/list.html";
+    }
+
+    @GetMapping("/order/cancel/{orderId}")
+    public String orderCancel(@PathVariable int orderId, HttpServletRequest request) {
+        log.debug("确认订单: orderId = {}", orderId);
+
+        User currentUser = null;
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            currentUser = (User) session.getAttribute("currentUser");
+        }
+
+        if (currentUser == null) {
+            // 说明用户未登录
+            log.debug("商品更新: 用户未登录，无权进行该操作");
+            return "redirect:/login.html";  // 重定向到登录页，让用户登录
+        }
+        log.debug("当前用户: user = {}", currentUser);
+
+        orderService.cancel(orderId);
+
+        return "redirect:/order/list.html";
+    }
 }

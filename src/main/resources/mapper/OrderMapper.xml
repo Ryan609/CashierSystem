@@ -26,4 +26,12 @@
                  join users on users.user_id = orders.user_id
         where uuid = #{uuid}
     </select>
+
+    <select id="selectAll" resultType="com.xinyan.cashiersystem.model.order.Order">
+        select
+            uuid, status, created_at, finished_at
+        from orders
+        order by order_id desc
+    </select>
+
 </mapper>

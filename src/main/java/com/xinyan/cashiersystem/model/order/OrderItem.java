@@ -19,6 +19,8 @@ public class OrderItem {
     private int productPrice;
     private int productDiscount;
 
+    public OrderItem() {}
+
     public OrderItem(Order order, Product product, int number) {
         this.orderId = order.getOrderId();
         this.productId = product.getProductId();

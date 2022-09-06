@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinyan.cashiersystem.mapper.ProductMapper">
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
         insert into products
             (user_id, name, introduce, stock, unit, price, discount)
@@ -37,5 +38,9 @@
 
     <update id="decreaseStockByProductId">
         update products set stock = stock - #{number} where product_id = #{productId}
+    </update>
+
+    <update id="incrementStockByProductId">
+        update products set stock = stock + #{number} where product_id = #{productId}
     </update>
 </mapper>

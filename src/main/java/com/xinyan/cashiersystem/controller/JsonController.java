@@ -2,7 +2,9 @@ package com.xinyan.cashiersystem.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xinyan.cashiersystem.model.User;
+import com.xinyan.cashiersystem.model.order.Order;
 import com.xinyan.cashiersystem.model.product.Product;
+import com.xinyan.cashiersystem.service.OrderService;
 import com.xinyan.cashiersystem.service.ProductService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +26,11 @@ import java.util.stream.Collectors;
 @RestController
 public class JsonController {
     private final ProductService productService;
+    private final OrderService orderService;
     @Autowired
-    public JsonController(ProductService productService) {
+    public JsonController(ProductService productService, OrderService orderService) {
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @Slf4j
@@ -66,25 +71,6 @@ public class JsonController {
 //                ProductView productView = new ProductView(product);
 //                view.data.add(productView);
 //            }
-
-            /*
-            // Stream 的写法
-            Stream<Product> stream = productList.stream();
-            // 针对其中的每一项（类型就是 Product)，调用一个方法
-            // lambda 表达式？
-            // (Product p) -> { return "hello" }    如果非要理解，其实就是只有一个方法的一个匿名对象
-            // p -> { return "hello" }
-            // p -> "hello"
-            // ProductView::new  是方法引用语法 类名::方法名，就是 ProductView 这个类的构造方法
-            // 针对 这个 stream 中的每一项（每一项都是一个 Product 对象）
-            // 调用传入的这个方法 Product::new
-            // 调用完成之后，每一项 Product 都得到了一个新的 ProductView 对象了
-            // 再收集起来，作为 Stream<ProductView> stream2
-            Stream<ProductView> stream2 = stream.map(ProductView::new);
-            // 最后，再收集成 List<ProductView>
-            view.data = stream2.collect(Collectors.toList());
-             */
-
             // 链式写法
             view.data = productList.stream()
                     .map(ProductView::new)
@@ -115,5 +101,62 @@ public class JsonController {
 
         List<Product> productList = productService.getList();
         return ProductListView.success(productList);
+    }
+
+
+
+    @Data
+    private static class OrderView {
+        private String uuid;
+        private String status;
+        private Timestamp createdAt;
+        private Timestamp finishedAt;
+
+        OrderView(Order order) {
+            this.uuid = order.getUuid();
+            this.status = order.getStatus().toString();
+            this.createdAt = order.getCreatedAt();
+            this.finishedAt = order.getFinishedAt();
+        }
+    }
+
+    @Data
+    private static class OrderListView {
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private String redirectUrl;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private List<OrderView> data;
+
+        public static OrderListView success(List<Order> orderList) {
+            OrderListView view = new OrderListView();
+            view.data = orderList.stream()
+                    .map(OrderView::new)
+                    .collect(Collectors.toList());
+            return view;
+        }
+
+        public static OrderListView failure(String redirectUrl) {
+            OrderListView view = new OrderListView();
+            view.redirectUrl = redirectUrl;
+            return view;
+        }
+    }
+
+    @GetMapping("/order/list.json")
+    public OrderListView orderList(HttpServletRequest request) {
+        User currentUser = null;
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            currentUser = (User) session.getAttribute("currentUser");
+        }
+
+        if (currentUser == null) {
+            // 说明没有登录
+            return OrderListView.failure("/login.html");
+        }
+
+        List<Order> orderList = orderService.getList();
+
+        return OrderListView.success(orderList);
     }
 }

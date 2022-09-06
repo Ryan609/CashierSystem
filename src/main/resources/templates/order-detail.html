@@ -40,6 +40,12 @@
 		<span th:text="${order.actual}"></span>
 	</div>
 
+	<!-- 只有在订单处于未支付状态时，这个 div 才会被添加 -->
+	<div th:if="${order.status} eq 'Unpaid'">
+		<a th:href="'/order/confirm/' + ${order.orderId}">确认</a>
+		<a th:href="'/order/cancel/' + ${order.orderId}">取消</a>
+	</div>
+
 	<table>
 		<thead>
 		<tr>

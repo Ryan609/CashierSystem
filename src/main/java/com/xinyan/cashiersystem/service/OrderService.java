@@ -187,4 +187,8 @@ public class OrderService {
 
         return order;
     }
+
+    public List<Order> getList() {
+        return orderMapper.selectAll();
+    }
 }

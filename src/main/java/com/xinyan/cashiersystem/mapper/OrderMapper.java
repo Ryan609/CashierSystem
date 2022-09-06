@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 @Mapper
@@ -23,4 +24,6 @@ public interface OrderMapper {
     void deleteByOrderId(int orderId);
 
     OrderDetail selectByUUID(String uuid);
+
+    List<Order> selectAll();
 }
