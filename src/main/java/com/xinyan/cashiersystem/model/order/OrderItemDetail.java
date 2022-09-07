@@ -19,6 +19,9 @@ public class OrderItemDetail {
     private String productUnit;
     private int productDiscount;
 
+
+    public OrderItemDetail() {}
+
     public int getId() {
         return productId;
     }

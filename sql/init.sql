@@ -1,14 +1,14 @@
-    create database cashv2 charset utf8mb4;
+    create database cash charset utf8mb4;
 
     -- 创建用户表（主键、用户名（唯一）、密码）
-    create table cashv2.users (
+    create table cash.users (
         user_id int primary key auto_increment,
         username varchar(50) not null unique,
         password char(60) not null
     ) comment '用户表，表示货管和收银两种角色，不区分';
 
     -- 创建商品表（主键、关系字段、名称、介绍、库存、单位、价格、折扣）
-    create table cashv2.products (
+    create table cash.products (
         product_id int primary key auto_increment,
         user_id int not null comment '这是用户上架商品的一对多的关系字段',
         name varchar(100) not null comment '名称',
@@ -20,7 +20,7 @@
     ) comment '商品表';
 
     -- 创建订单表（主键、关系字段、订单编号（uuid）、下单时间、完成时间、状态）
-    create table cashv2.orders (
+    create table cash.orders (
         order_id int primary key auto_increment,
         user_id int not null comment '这个是用户创建订单的一对多的关系字段',
         uuid char(32) not null unique comment '对外显示的不连续的订单编号，不会重复',
@@ -32,7 +32,7 @@
     ) comment '订单的总体信息';
 
     -- 创建订单和商品的关系表 —— 订单项表（主键、两个关系字段、为了防止商品下架后信息丢失，将商品信息备份一份）
-    create table cashv2.order_items (
+    create table cash.order_items (
         id int primary key auto_increment,
         order_id int not null comment '属于哪个订单',
         product_id int not null comment '订单中的哪个商品',

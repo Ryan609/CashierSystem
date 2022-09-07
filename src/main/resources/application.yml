@@ -3,9 +3,9 @@ spring:
     banner-mode: off
     log-startup-info: false
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/cash?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: wxywxy123
+    url: jdbc:mysql://localhost:3306/cash?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: cashuser
+    password: 123456789
 logging:
   level:
     root: warn

@@ -43,6 +43,8 @@ public class JsonController {
         private double price;
         private int discount;
 
+        public ProductView() {}
+
         public ProductView(Product product) {
             log.debug("ProductView(product = {})", product);
             this.name = product.getName();
@@ -111,6 +113,8 @@ public class JsonController {
         private String status;
         private Timestamp createdAt;
         private Timestamp finishedAt;
+
+        public OrderView() {}
 
         OrderView(Order order) {
             this.uuid = order.getUuid();

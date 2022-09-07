@@ -21,6 +21,8 @@ public class OrderDetail {
     private int actual;
     private List<OrderItemDetail> itemList;
 
+    public OrderDetail() {}
+
     public void setStatus(int status) {
         if (status == 1) {
             this.status = OrderStatus.Unpaid;

@@ -1,0 +1,19 @@
+. 功能区 基本信息 {
+    background-color: #e3e3e3;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.下一步{
+    padding: 8px;
+}
+
+.下一步 a {
+    color: black;
+    text-decoration: none;
+    background-color: #aacfd0;
+}
+
+.功能区 > * {
+    margin: 16px 0;
+}
